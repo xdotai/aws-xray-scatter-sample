@@ -11,4 +11,4 @@ RUN bundle install --path vendor/bundle
 
 USER ubuntu
 
-CMD bundle exec rackup
+CMD bundle exec rackup -o 0.0.0.0
