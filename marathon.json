@@ -1,0 +1,42 @@
+{
+  "id": "/dashboards/xray",
+  "instances": 1,
+  "cpus": 0.1,
+  "mem": 256,
+  "constraints": [
+    [ "xdotai_hosted-service", "LIKE", "marathon" ],
+    [ "xdotai_status", "LIKE", "production" ],
+    [ "hostname", "UNIQUE" ]
+  ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "303214696237.dkr.ecr.us-east-1.amazonaws.com/aws-xray-scatter-sample:{{ version }}",
+      "network": "BRIDGE",
+      "portMappings": [
+        {
+          "containerPort": 9292,
+          "hostPort": 0,
+          "servicePort": 0,
+          "protocol": "tcp"
+        }
+      ]
+    }
+  },
+  "healthChecks": [
+    {
+      "path": "/",
+      "protocol": "HTTP",
+      "portIndex": 0,
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ],
+  "labels": {
+    "env": "production",
+    "version": "{{ version }}"
+  }
+}
